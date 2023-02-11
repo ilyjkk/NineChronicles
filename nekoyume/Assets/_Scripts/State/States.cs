@@ -66,9 +66,10 @@ namespace Nekoyume.State
         public int StakingLevel { get; private set; }
 
         public GrandFinaleStates GrandFinaleStates { get; } = new GrandFinaleStates();
+
         private class Workshop
         {
-            public Dictionary<int, CombinationSlotState> States { get; }= new();
+            public Dictionary<int, CombinationSlotState> States { get; } = new();
         }
 
         private readonly Dictionary<Address, Workshop> _slotStates = new();
@@ -150,7 +151,7 @@ namespace Nekoyume.State
             var runeSheet = Game.Game.instance.TableSheets.RuneSheet;
             var avatarAddress = CurrentAvatarState.address;
             var runes = new List<FungibleAssetValue>();
-            await foreach (var row in runeSheet.Values)
+            foreach (var row in runeSheet.Values)
             {
                 var rune = RuneHelper.ToCurrency(row, 0, null);
                 var fungibleAsset = await Game.Game.instance.Agent.GetBalanceAsync(avatarAddress, rune);
@@ -393,7 +394,8 @@ namespace Nekoyume.State
         {
             if (skillState is null)
             {
-                Debug.LogWarning($"[{nameof(States)}.{nameof(SetCrystalRandomSkillState)}] {nameof(skillState)} is null.");
+                Debug.LogWarning(
+                    $"[{nameof(States)}.{nameof(SetCrystalRandomSkillState)}] {nameof(skillState)} is null.");
             }
 
             CrystalRandomSkillState = skillState;
@@ -671,7 +673,7 @@ namespace Nekoyume.State
 
             var states = _slotStates[avatarState.address].States;
             return states.Where(x => !x.Value.Validate(avatarState, currentBlockIndex))
-                         .ToDictionary(pair => pair.Key, pair => pair.Value);
+                .ToDictionary(pair => pair.Key, pair => pair.Value);
         }
 
         public void SetGameConfigState(GameConfigState state)

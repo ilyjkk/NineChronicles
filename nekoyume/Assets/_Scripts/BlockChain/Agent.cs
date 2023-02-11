@@ -912,8 +912,7 @@ namespace Nekoyume.BlockChain
             var sleepInterval = new WaitForSeconds(15);
             while (true)
             {
-                var task = Task.Run(async () => await miner.MineBlockAsync(_cancellationTokenSource.Token));
-                yield return new WaitUntil(() => task.IsCompleted);
+                yield return miner.ProposeBlock();
 #if UNITY_EDITOR
                 yield return sleepInterval;
 #endif

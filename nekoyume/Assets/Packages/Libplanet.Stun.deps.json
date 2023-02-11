@@ -7,7 +7,7 @@
   "targets": {
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
-      "Libplanet.Stun/0.45.4": {
+      "Libplanet.Stun/1.0.0": {
         "dependencies": {
           "Menees.Analyzers.2017": "2.0.3",
           "Microsoft.DotNet.Analyzers.Compatibility": "0.2.12-alpha",
@@ -259,7 +259,7 @@
     }
   },
   "libraries": {
-    "Libplanet.Stun/0.45.4": {
+    "Libplanet.Stun/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
