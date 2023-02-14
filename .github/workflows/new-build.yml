@@ -54,7 +54,6 @@ jobs:
 
       - uses: game-ci/unity-builder@v2
         with:
-          customImage: 'unityci/editor:${DOCKER_IMAGE_TAG}'
           projectPath: ${{ matrix.projectPath }}
           targetPlatform: ${{ matrix.targetPlatform }}
           androidKeystoreName: 'virtuos-password-123456.keystore'
