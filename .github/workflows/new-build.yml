@@ -61,8 +61,8 @@ jobs:
           androidKeystoreName: virtuos-password-123456.keystore
           androidKeystoreBase64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
           androidKeystorePass: ${{ secrets.ANDROID_KEYSTORE_PASS }}
-          androidKeyaliasName: ${{ secrets.ANDROID_KEYALIAS_NAME }}
-          androidKeyaliasPass: ${{ secrets.ANDROID_KEYALIAS_PASS }}
+          androidKeyaliasName: ${{ secrets.ANDROID_KEY_ALIAS_NAME }}
+          androidKeyaliasPass: ${{ secrets.ANDROID_KEY_ALIAS_PASS }}
           androidTargetSdkVersion: AndroidApiLevel28
       - uses: actions/upload-artifact@v3
         with:
