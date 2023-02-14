@@ -9,7 +9,6 @@ env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
   UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
   UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-  PROJECT_PATH: necoyume
 
 jobs:
   build:
@@ -19,6 +18,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        projectPath:
+          - ./necoyume
         targetPlatform:
           - StandaloneWindows
     steps:
@@ -37,7 +38,8 @@ jobs:
       # https://github.com/game-ci/unity-builder/releases/
       - uses: game-ci/unity-builder@v2
         with:
-          projectPath: ${{ env.PROJECT_PATH }}
+          customImage: 'unityci/editor:2021.3.5f1-windows-mono-1'
+          projectPath: ${{ matrix.PROJECT_PATH }}
           targetPlatform: ${{ matrix.targetPlatform }}
       - uses: actions/upload-artifact@v3
         with:
