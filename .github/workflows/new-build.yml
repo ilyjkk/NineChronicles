@@ -19,7 +19,9 @@ jobs:
       fail-fast: false
       matrix:
         projectPath:
-          - necoyume
+          - nekoyume
+        unityVersion:
+        - 2021.3.5f1
         targetPlatform:
           - StandaloneWindows
     steps:
@@ -38,7 +40,7 @@ jobs:
       # https://github.com/game-ci/unity-builder/releases/
       - uses: game-ci/unity-builder@v2
         with:
-          customImage: 'unityci/editor:2021.3.5f1-windows-mono-1'
+          customImage: 'unityci/editor:${{ matrix.unityVersion }}-windows-mono-1'
           projectPath: ${{ matrix.projectPath }}
           targetPlatform: ${{ matrix.targetPlatform }}
       - uses: actions/upload-artifact@v3
