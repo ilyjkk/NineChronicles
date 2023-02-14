@@ -22,10 +22,23 @@ jobs:
         projectPath:
           - nekoyume
         unityVersion:
-        - 2021.3.5f1
+          - 2021.3.5f1
         targetPlatform:
-          - StandaloneWindows
+          - Android
     steps:
+      - name: Set environment variables
+        run: |
+          targetPlatform=${{ matrix.targetPlatform }}
+          if [ "$targetPlatform" == "StandaloneWindows" ]; then
+            echo "DOCKER_IMAGE_TAG=${{ matrix.unityVersion }}-windows-mono-1" >> $GITHUB_ENV
+          elif [ "$targetPlatform" == "macOS" ]; then
+            echo "DOCKER_IMAGE_TAG=${{ matrix.unityVersion }}-mac-mono-1" >> $GITHUB_ENV
+          elif [ "$targetPlatform" == "Linux" ]; then
+            echo "DOCKER_IMAGE_TAG=${{ matrix.unityVersion }}-linux-il2cpp-1" >> $GITHUB_ENV
+          elif [ "$targetPlatform" == "Android" ]; then
+            echo "DOCKER_IMAGE_TAG=${{ matrix.unityVersion }}-android-1" >> $GITHUB_ENV
+          fi
+
       - uses: actions/checkout@v3
         with:
           lfs: true
@@ -38,12 +51,19 @@ jobs:
           restore-keys: |
             Library-${{ matrix.projectPath }}-
             Library-
-      # https://github.com/game-ci/unity-builder/releases/
+
       - uses: game-ci/unity-builder@v2
         with:
-          customImage: 'unityci/editor:${{ matrix.unityVersion }}-windows-mono-1'
+          customImage: 'unityci/editor:${DOCKER_IMAGE_TAG}'
           projectPath: ${{ matrix.projectPath }}
           targetPlatform: ${{ matrix.targetPlatform }}
+          androidExportType: 'androidAppBundle'
+          androidKeystoreName: virtuos-password-123456.keystore
+          androidKeystoreBase64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          androidKeystorePass: ${{ secrets.ANDROID_KEYSTORE_PASS }}
+          androidKeyaliasName: ${{ secrets.ANDROID_KEYALIAS_NAME }}
+          androidKeyaliasPass: ${{ secrets.ANDROID_KEYALIAS_PASS }}
+          androidTargetSdkVersion: AndroidApiLevel28
       - uses: actions/upload-artifact@v3
         with:
           name: Build-${{ matrix.targetPlatform }}
