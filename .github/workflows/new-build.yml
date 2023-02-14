@@ -15,7 +15,7 @@ jobs:
   build:
     name: Build for ${{ matrix.targetPlatform }}
     runs-on:
-      labels: ["windows", "64cores"]
+      labels: ["windows-64cores", "windows"]
     strategy:
       fail-fast: false
       matrix:
