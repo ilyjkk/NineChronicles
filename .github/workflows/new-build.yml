@@ -14,7 +14,8 @@ env:
 jobs:
   build:
     name: Build for ${{ matrix.targetPlatform }}
-    runs-on: windows-2019
+    runs-on:
+      labels: ["linux", "8cores"]
     strategy:
       fail-fast: false
       matrix:
@@ -39,8 +40,8 @@ jobs:
       - uses: game-ci/unity-builder@v2
         with:
           projectPath: ${{ matrix.projectPath }}
+          customImage: "unityci/editor:ubuntu-2021.3.5f1-linux-il2cpp-1"
           targetPlatform: ${{ matrix.targetPlatform }}
-          customImage: "unityci/editor:windows-2021.3.5f1-windows-il2cpp-1"
           androidKeystoreName: 'virtuos-password-123456.keystore'
           androidKeystoreBase64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
           androidKeystorePass: ${{ secrets.ANDROID_KEYSTORE_PASS }}
