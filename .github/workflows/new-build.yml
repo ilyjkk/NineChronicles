@@ -5,14 +5,14 @@ on:
     branches: []
 
 env:
-  UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-  UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-  UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+  UNITY_EMAIL: ${{ secrets.TEMP_UNITY_EMAIL }}
+  UNITY_PASSWORD: ${{ secrets.TEMP_UNITY_PASSWORD }}
+  UNITY_LICENSE: ${{ secrets.TEMP_UNITY_LICENSE }}
 
 jobs:
   build:
     name: Build for ${{ matrix.targetPlatform }}
-    runs-on: 
+    runs-on:
       labels: ["self-hosted", "Windows"]
     strategy:
       fail-fast: false
