@@ -3,7 +3,6 @@ name: Unity Actions
 on:
   push:
     branches: []
-    tags: ["*"]
 
 env:
   UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
