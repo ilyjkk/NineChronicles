@@ -35,7 +35,7 @@ jobs:
             Library-${{ matrix.projectPath }}-
             Library-
 
-      - uses: game-ci/unity-builder@v2
+      - uses: Atralupus/unity-builder@fix-gitconfig
         with:
           projectPath: ${{ matrix.projectPath }}
           customImage: "unityci/editor:windows-2021.3.5f1-windows-il2cpp-1"
