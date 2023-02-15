@@ -6,7 +6,6 @@ on:
     tags: ["*"]
 
 env:
-  UNITY_LICENSE: ${{ secrets.ULF_2021 }}
   UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
   UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
   UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
