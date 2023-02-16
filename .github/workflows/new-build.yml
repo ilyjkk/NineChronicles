@@ -7,7 +7,7 @@ on:
 env:
   UNITY_EMAIL: ${{ secrets.TEMP_UNITY_EMAIL }}
   UNITY_PASSWORD: ${{ secrets.TEMP_UNITY_PASSWORD }}
-  UNITY_LICENSE: ${{ secrets.TEMP_UNITY_LICENSE }}
+  UNITY_LICENSE: ${{ secrets.TEMP_UNITY_LINUX_LICENSE }}
 
 jobs:
   build:
