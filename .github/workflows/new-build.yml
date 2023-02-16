@@ -13,7 +13,7 @@ jobs:
   build:
     name: Build for ${{ matrix.targetPlatform }}
     runs-on:
-      labels: ["self-hosted", "Windows"]
+      labels: ["linux", "8cores"]
     strategy:
       fail-fast: false
       matrix:
@@ -34,11 +34,10 @@ jobs:
           restore-keys: |
             Library-${{ matrix.projectPath }}-
             Library-
-
-      - uses: Atralupus/unity-builder@fix-gitconfig
+      - uses: game-ci/unity-builder@v2
         with:
           projectPath: ${{ matrix.projectPath }}
-          customImage: "unityci/editor:2021.3.5f1-android-1"
+          customImage: "unityci/editor:ubuntu-2021.3.5f1-linux-il2cpp-1"
           targetPlatform: ${{ matrix.targetPlatform }}
           androidKeystoreName: 'virtuos-password-123456.keystore'
           androidKeystoreBase64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
