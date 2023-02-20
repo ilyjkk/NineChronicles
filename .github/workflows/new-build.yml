@@ -13,7 +13,7 @@ jobs:
   build:
     name: Build for ${{ matrix.targetPlatform }}
     runs-on:
-      labels: ["self-hosted", "Windows"]
+      labels: ["windows-2019-64cores", "windows"]
     strategy:
       fail-fast: false
       matrix:
@@ -38,7 +38,7 @@ jobs:
       - uses: Atralupus/unity-builder@fix-gitconfig
         with:
           projectPath: ${{ matrix.projectPath }}
-          customImage: "longfin/unity-editor:windows-2021.3.5f1-android-1"
+          customImage: "longfin/unity-editor:windows-2021.3.5f1-android-2"
           targetPlatform: ${{ matrix.targetPlatform }}
           androidKeystoreName: 'virtuos-password-123456.keystore'
           androidKeystoreBase64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
