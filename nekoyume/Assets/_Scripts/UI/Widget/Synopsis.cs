@@ -375,8 +375,8 @@ namespace Nekoyume.UI
 #else
             var skipPrologue = States.Instance.AgentState.avatarAddresses.Any();
 #endif
-            skipButton.SetActive(skipPrologue);
-            StartCoroutine(StartSynopsis(skipPrologue));
+            skipButton.SetActive(true);
+            StartCoroutine(StartSynopsis(true));
         }
 
         private async Task End()
