@@ -7,13 +7,13 @@ on:
 env:
   UNITY_EMAIL: ${{ secrets.TEMP_UNITY_EMAIL }}
   UNITY_PASSWORD: ${{ secrets.TEMP_UNITY_PASSWORD }}
-  UNITY_LICENSE: ${{ secrets.TEMP_UNITY_LINUX_LICENSE }}
+  UNITY_LICENSE: ${{ secrets.TEMP_UNITY_LICENSE }}
 
 jobs:
   build:
     name: Build for ${{ matrix.targetPlatform }}
     runs-on:
-      labels: ["linux", "8cores"]
+      labels: ["self-hosted", "Windows"]
     strategy:
       fail-fast: false
       matrix:
@@ -35,11 +35,11 @@ jobs:
             Library-${{ matrix.projectPath }}-
             Library-
 
-      - uses: game-ci/unity-builder@v2
+      - uses: Atralupus/unity-builder@fix-gitconfig
         with:
           projectPath: ${{ matrix.projectPath }}
+          customImage: "longfin/unity-editor:windows-2021.3.5f1-android-2"
           targetPlatform: ${{ matrix.targetPlatform }}
-          buildMethod: 'Editor.Builder.BuildAndroidStandalone'
           androidKeystoreName: 'virtuos-password-123456.keystore'
           androidKeystoreBase64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
           androidKeystorePass: ${{ secrets.ANDROID_KEYSTORE_PASS }}
