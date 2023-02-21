@@ -27,18 +27,11 @@ jobs:
           lfs: true
           submodules: true
 
-      - uses: actions/cache@v3
-        with:
-          path: ${{ matrix.projectPath }}/Library
-          key: Library-${{ matrix.projectPath }}-${{ matrix.targetPlatform }}
-          restore-keys: |
-            Library-${{ matrix.projectPath }}-
-            Library-
       - uses: game-ci/unity-builder@v2
         with:
           projectPath: ${{ matrix.projectPath }}
           targetPlatform: ${{ matrix.targetPlatform }}
-          customImage: "atralupus/editor:ubuntu-2021.3.5f1-android-bee_backend-1"
+          customImage: "atralupus/unity-editor:ubuntu-2021.3.5f1-android-il2cpp-1"
           buildMethod: 'Editor.Builder.BuildAndroidStandalone'
           androidKeystoreName: 'virtuos-password-123456.keystore'
           androidKeystoreBase64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
