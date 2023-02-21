@@ -30,7 +30,7 @@ jobs:
       - uses: planetarium/unity-builder@fix-gitconfig
         with:
           projectPath: ${{ matrix.projectPath }}
-          customImage: "atralupus/windows-2021.3.5f1-android-1"
+          customImage: "atralupus/editor:windows-2021.3.5f1-android-1"
           targetPlatform: ${{ matrix.targetPlatform }}
           buildMethod: 'Editor.Builder.BuildAndroidStandalone'
           androidKeystoreName: 'virtuos-password-123456.keystore'
