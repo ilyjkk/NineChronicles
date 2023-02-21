@@ -2336,8 +2336,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "<Style=G1> DEF 80%<Style=G1> HP 60%<Style=G1> HP 60%     >   \n<color=#4af328><Style=G1>
-    DEF 85%<Style=G1> HP 65%<Style=G1> HP 65%</color>"
+  m_text: "<Style=G10>DEF 80%<Style=G11>HP 60%<Style=G11>HP 60%     >   \n<color=#4af328><Style=G10>DEF
+    85%<Style=G11>HP 65%<Style=G11>HP 65%</color>"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8a682b7747d4a664089b7b1065aa0035, type: 2}
   m_sharedMaterial: {fileID: -2364689171920820918, guid: 8a682b7747d4a664089b7b1065aa0035,
