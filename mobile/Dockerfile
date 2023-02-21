@@ -11,3 +11,4 @@ ENV JAVA_HOME="C:\\Program Files\\Unity\\Hub\\Editor\\${UNITY_VERSION}\\Editor\\
 SHELL ["bash.exe", "-c"]
 
 RUN "yes | ./sdkmanager.bat --install 'build-tools;28.0.0'"
+RUN "yes | ./sdkmanager.bat --install 'platforms;android-28'"
