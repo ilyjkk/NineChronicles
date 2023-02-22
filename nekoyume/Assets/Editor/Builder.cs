@@ -15,7 +15,7 @@ namespace Editor
     public class Builder
     {
         private static readonly string PlayerName = PlayerSettings.productName;
-        private const string BuildBasePath = "Build";
+        private const string BuildBasePath = "build";
 
         [MenuItem("Build/Standalone/Android Arm64")]
         public static void BuildAndroidStandalone()
