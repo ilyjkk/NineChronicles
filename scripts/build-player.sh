@@ -19,6 +19,10 @@ if [ "$build_target" == "Linux" ]; then
   build_target="Linux"
 fi
 
+if [ "$build_target" == "Android" ]; then
+  build_target="AndroidStandalone"
+fi
+
 # shellcheck disable=SC1090
 source "$(dirname "$0")/_common.sh"
 
