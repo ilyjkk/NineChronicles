@@ -231,7 +231,6 @@ namespace Editor
             targetDirName ??= buildTarget.ToString();
             string locationPathName = Path.Combine(
                 "../",
-                "../",
                 BuildBasePath,
                 targetDirName,
                 buildTarget switch
