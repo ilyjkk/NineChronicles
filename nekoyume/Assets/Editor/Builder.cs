@@ -244,7 +244,7 @@ namespace Editor
             var buildPlayerOptions = new BuildPlayerOptions
             {
                 scenes = scenes,
-                locationPathName = locationPathName,
+                // locationPathName = locationPathName,
                 target = buildTarget,
                 options = EditorUserBuildSettings.development
                     ? options | BuildOptions.Development | BuildOptions.AllowDebugging
