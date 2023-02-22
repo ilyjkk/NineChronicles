@@ -21,8 +21,6 @@ namespace Editor
         public static void BuildAndroidStandalone()
         {
             Debug.Log("Build Android");
-            EditorUserBuildSettings.il2CppCodeGeneration = UnityEditor.Build.Il2CppCodeGeneration.OptimizeSize;
-            EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
             BuildOptions options = BuildOptions.None;
             Build(BuildTarget.Android, options, "Android", false);
         }
@@ -232,6 +230,7 @@ namespace Editor
 
             targetDirName ??= buildTarget.ToString();
             string locationPathName = Path.Combine(
+                "../",
                 BuildBasePath,
                 targetDirName,
                 buildTarget switch
