@@ -25,6 +25,7 @@ jobs:
       - name: Set git to use LF
         run: |
           git config --global core.autocrlf true
+          git config --global core.eol crlf
 
       - uses: actions/checkout@v3
         with:
