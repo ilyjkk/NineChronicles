@@ -22,6 +22,10 @@ jobs:
         targetPlatform:
           - Android
     steps:
+      - name: Set git to use LF
+        run: |
+          git config --global core.autocrlf true
+
       - uses: actions/checkout@v3
         with:
           lfs: true
