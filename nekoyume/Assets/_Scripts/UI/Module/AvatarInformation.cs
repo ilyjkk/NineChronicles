@@ -1007,7 +1007,7 @@ namespace Nekoyume.UI.Module
             return elementalTypes;
         }
 
-        public static int TestDccId = 0;
+        public static int TestDccId = 1;
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -1015,7 +1015,7 @@ namespace Nekoyume.UI.Module
                 TestDccId++;
                 if (TestDccId > 3000)
                 {
-                    TestDccId = 0;
+                    TestDccId = 1;
                 }
 
                 Debug.Log($"[TestDccId] : {TestDccId}");
@@ -1025,7 +1025,7 @@ namespace Nekoyume.UI.Module
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 TestDccId--;
-                if (TestDccId < 0)
+                if (TestDccId < 1)
                 {
                     TestDccId = 3000;
                 }
