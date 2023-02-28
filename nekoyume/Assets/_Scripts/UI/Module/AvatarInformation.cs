@@ -103,6 +103,23 @@ namespace Nekoyume.UI.Module
             LoadingHelper.UnlockRuneSlot.ObserveCountChanged().Subscribe(x => {
                 UpdateRuneView();
             }).AddTo(_disposables);
+
+            if (InputField is not null)
+            {
+                InputField.text = "1";
+                InputField.onSubmit.AddListener(v =>
+                {
+                    TestDccId = Convert.ToInt32(v);
+                    if (TestDccId > 3000 || TestDccId < 1)
+                    {
+                        TestDccId = 1;
+                    }
+
+                    InputField.text = $"{TestDccId}";
+                    Debug.Log($"[TestDccId] : {TestDccId}");
+                    UpdateItemView();
+                });
+            }
         }
 
         public bool TryGetFirstCell(out InventoryItem item)
@@ -1008,6 +1025,7 @@ namespace Nekoyume.UI.Module
         }
 
         public static int TestDccId = 1;
+        public TMP_InputField InputField;
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -1016,6 +1034,11 @@ namespace Nekoyume.UI.Module
                 if (TestDccId > 3000)
                 {
                     TestDccId = 1;
+                }
+
+                if (InputField is not null)
+                {
+                    InputField.text = $"{TestDccId}";
                 }
 
                 Debug.Log($"[TestDccId] : {TestDccId}");
@@ -1028,6 +1051,11 @@ namespace Nekoyume.UI.Module
                 if (TestDccId < 1)
                 {
                     TestDccId = 3000;
+                }
+
+                if (InputField is not null)
+                {
+                    InputField.text = $"{TestDccId}";
                 }
 
                 Debug.Log($"[TestDccId] : {TestDccId}");

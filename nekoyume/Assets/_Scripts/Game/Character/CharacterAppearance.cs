@@ -140,17 +140,17 @@ namespace Nekoyume.Game.Character
             _hudContainer = hudContainer;
             Destroy(_cachedCharacterTitle);
 
-            var isDcc = Dcc.instance.IsVisible(avatarAddress, out var id, out var isVisible);
-            if (isDcc && States.Instance.CurrentAvatarState is not null &&
-                avatarAddress == States.Instance.CurrentAvatarState.address)
-            {
-                isDcc = isVisible;
-            }
+            // var isDcc = Dcc.instance.IsVisible(avatarAddress, out var id, out var isVisible);
+            // if (isDcc && States.Instance.CurrentAvatarState is not null &&
+            //     avatarAddress == States.Instance.CurrentAvatarState.address)
+            // {
+            //     isDcc = isVisible;
+            // }
 
-            isDcc = true;
+            var isDcc = true;
             if (isDcc)
             {
-                id = AvatarInformation.TestDccId;
+                var id = AvatarInformation.TestDccId;
                 var dccParts = await Dcc.instance.GetParts(id);
                 var log = dccParts.Aggregate("", (current, part) => current + $"{part.Value}-");
                 Debug.Log($"[PARTS] :{log}");
