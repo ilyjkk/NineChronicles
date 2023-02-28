@@ -1006,5 +1006,33 @@ namespace Nekoyume.UI.Module
                 : ElementalTypeExtension.GetAllTypes();
             return elementalTypes;
         }
+
+        public static int TestDccId = 0;
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                TestDccId++;
+                if (TestDccId > 3000)
+                {
+                    TestDccId = 0;
+                }
+
+                Debug.Log($"[TestDccId] : {TestDccId}");
+                UpdateItemView();
+            }
+
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                TestDccId--;
+                if (TestDccId < 0)
+                {
+                    TestDccId = 3000;
+                }
+
+                Debug.Log($"[TestDccId] : {TestDccId}");
+                UpdateItemView();
+            }
+        }
     }
 }

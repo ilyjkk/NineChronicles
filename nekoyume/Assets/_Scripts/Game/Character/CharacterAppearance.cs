@@ -13,6 +13,7 @@ using Nekoyume.State;
 using Nekoyume.TableData;
 using Nekoyume.UI;
 using Nekoyume.UI.Model;
+using Nekoyume.UI.Module;
 using Spine.Unity;
 using UnityEngine;
 
@@ -120,6 +121,9 @@ namespace Nekoyume.Game.Character
             UpdateHitPoint();
         }
 
+        private int testDccId = 0;
+
+
         private async void UpdateAvatar(
             Address avatarAddress,
             CharacterAnimator animator,
@@ -143,9 +147,14 @@ namespace Nekoyume.Game.Character
                 isDcc = isVisible;
             }
 
+            isDcc = true;
             if (isDcc)
             {
+                id = AvatarInformation.TestDccId;
                 var dccParts = await Dcc.instance.GetParts(id);
+                var log = dccParts.Aggregate("", (current, part) => current + $"{part.Value}-");
+                Debug.Log($"[PARTS] :{log}");
+
                 // ignore full costume
                 SpineController.UnequipFullCostume(false);
                 UpdateArmor(armor, dccParts[DccPartsType.skin], true);
