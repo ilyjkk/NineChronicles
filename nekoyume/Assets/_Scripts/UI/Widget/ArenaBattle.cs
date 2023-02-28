@@ -48,8 +48,11 @@ namespace Nekoyume.UI
             bool ignoreShowAnimation = false)
         {
             Find<HeaderMenuStatic>().Close(true);
+            Find<Status>().Close(true);
+            Find<EventBanner>().Close(true);
             SetStatus(myDigest, myStatus, myAvatarAddress);
             SetStatus(enemyDigest, enemyStatus, enemyAvatarAddress);
+
             comboText.comboMax = AttackCountHelper.GetCountMax(myDigest.Level);
             comboText.Close();
             base.Show(ignoreShowAnimation);
