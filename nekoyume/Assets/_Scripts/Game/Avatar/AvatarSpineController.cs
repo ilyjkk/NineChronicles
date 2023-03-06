@@ -433,7 +433,7 @@ namespace Nekoyume.Game.Avatar
 
             var zero = index < 10 ? "0" : string.Empty;
             var skinName = isDcc ? $"DCC_{zero}{index}" : $"{index}";
-            var skinName = isDcc ? $"DCC_{index}" : $"{index}";
+            UpdateSkin(isActive, AvatarPartsType.ac_head, skinName);
         }
 
         private string SanitizeAnimationName(SkeletonAnimation skeletonAnimation,
