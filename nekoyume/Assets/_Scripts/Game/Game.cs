@@ -230,11 +230,20 @@ namespace Nekoyume.Game
             Stage.Initialize();
             Arena.Initialize();
             RaidStage.Initialize();
-            StartCoroutine(RequestManager.instance.GetJson(URL.DccAvatars, (json) =>
-            {
-                var responseData = DccAvatars.FromJson(json);
-                Dcc.instance.Init(responseData.Avatars);
-            }));
+            StartCoroutine(CoInitDccAvatar());
+            var headerName = URL.DccEthChainHeaderName;
+            var headerValue = URL.DccEthChainHeaderValue;
+            StartCoroutine(RequestManager.instance.GetJson(
+                $"{URL.DccMileageAPI}{Agent.Address}",
+                headerName,
+                headerValue,
+                _ =>
+                {
+                    Dcc.instance.IsConnected = true;
+                }, _ =>
+                {
+                    Dcc.instance.IsConnected = false;
+                }));
 
             Event.OnUpdateAddresses.AsObservable().Subscribe(_ =>
             {
@@ -571,12 +580,19 @@ namespace Nekoyume.Game
 
         public void BackToNest()
         {
+            StartCoroutine(CoBackToNest());
+        }
+
+        private IEnumerator CoBackToNest()
+        {
+            yield return StartCoroutine(Game.instance.CoInitDccAvatar());
+
             if (IsInWorld)
             {
                 NotificationSystem.Push(Nekoyume.Model.Mail.MailType.System,
                     L10nManager.Localize("UI_BLOCK_EXIT"),
                     NotificationCell.NotificationType.Information);
-                return;
+                yield break;
             }
 
             Event.OnNestEnter.Invoke();
@@ -837,6 +853,19 @@ namespace Nekoyume.Game
             }
 
             return msg;
+        }
+
+        private IEnumerator CoInitDccAvatar()
+        {
+            return RequestManager.instance.GetJson(
+                URL.DccAvatars,
+                URL.DccEthChainHeaderName,
+                URL.DccEthChainHeaderValue,
+                (json) =>
+                {
+                    var responseData = DccAvatars.FromJson(json);
+                    Dcc.instance.Init(responseData.Avatars);
+                });
         }
 
         public void PauseTimeline(PlayableDirector whichOne)

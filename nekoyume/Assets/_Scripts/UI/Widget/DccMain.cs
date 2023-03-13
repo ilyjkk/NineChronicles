@@ -22,6 +22,9 @@ namespace Nekoyume.UI
         [SerializeField]
         private GameObject notification;
 
+        [SerializeField]
+        private GameObject connectedObject;
+
         private readonly List<IDisposable> _disposables = new();
 
         protected override void OnEnable()
@@ -33,7 +36,7 @@ namespace Nekoyume.UI
                 var hasNotification = false;
                 foreach (var row in TableSheets.Instance.PetSheet)
                 {
-                    hasNotification |= PetRenderingHelper.HasNotification(row.Id);
+                    hasNotification |= PetFrontHelper.HasNotification(row.Id);
                 }
 
                 notification.SetActive(hasNotification);
@@ -73,6 +76,7 @@ namespace Nekoyume.UI
         public override void Show(bool ignoreShowAnimation = false)
         {
             Find<HeaderMenuStatic>().UpdateAssets(HeaderMenuStatic.AssetVisibleState.Mileage);
+            connectedObject.SetActive(Dcc.instance.IsConnected.GetValueOrDefault());
             base.Show(ignoreShowAnimation);
         }
     }

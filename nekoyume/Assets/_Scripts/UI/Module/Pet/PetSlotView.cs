@@ -1,17 +1,20 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Coffee.UIEffects;
 using Nekoyume.Game;
 using Nekoyume.Helper;
 using Nekoyume.L10n;
 using Nekoyume.Model.State;
 using Nekoyume.State;
+using Nekoyume.UI.Module.Pet;
 using Nekoyume.UI.Scroller;
+using Spine.Unity;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Nekoyume.UI.Module.Pet
+namespace Nekoyume.UI.Module
 {
     using UniRx;
     public class PetSlotView : MonoBehaviour
@@ -20,10 +23,10 @@ namespace Nekoyume.UI.Module.Pet
         private Button button;
 
         [SerializeField]
-        private Image petImage;
+        private PetInfoView infoView;
 
         [SerializeField]
-        private Image soulStoneImage;
+        private SkeletonGraphic petGraphic;
 
         [SerializeField]
         private GameObject emptyObject;
@@ -32,16 +35,7 @@ namespace Nekoyume.UI.Module.Pet
         private GameObject petInfoObject;
 
         [SerializeField]
-        private TextMeshProUGUI soulStoneText;
-
-        [SerializeField]
         private TextMeshProUGUI levelText;
-
-        [SerializeField]
-        private TextMeshProUGUI petInfoText;
-
-        [SerializeField]
-        private GameObject equippedIcon;
 
         [SerializeField]
         private GameObject levelUpNotification;
@@ -54,6 +48,12 @@ namespace Nekoyume.UI.Module.Pet
 
         [SerializeField]
         private GameObject summonableNotification;
+
+        [SerializeField]
+        private List<UIHsvModifier> uiHsvModifiers;
+
+        [SerializeField]
+        private GameObject selectedObject;
 
         private PetState _petState;
         private readonly List<IDisposable> _disposables = new();
@@ -69,9 +69,9 @@ namespace Nekoyume.UI.Module.Pet
                 .AddTo(_disposables);
             emptyObject.SetActive(model.Empty.Value);
             petInfoObject.SetActive(!model.Empty.Value);
-            equippedIcon.SetActive(false);
             hasNotification.SetActive(false);
             levelUpNotification.SetActive(false);
+            selectedObject.SetActive(false);
             loading.SetActive(false);
             summonableNotification.SetActive(false);
             if (model.PetRow is null)
@@ -79,30 +79,34 @@ namespace Nekoyume.UI.Module.Pet
                 return;
             }
 
-            var isOwn = States.Instance.PetStates.TryGetPetState(model.PetRow.Id, out _petState);
-            petImage.overrideSprite = PetRenderingHelper.GetPetCardSprite(model.PetRow.Id);
-            soulStoneImage.overrideSprite = PetRenderingHelper.GetSoulStoneSprite(model.PetRow.Id);
-            soulStoneText.text = States.Instance.AvatarBalance[model.PetRow.SoulStoneTicker]
-                .GetQuantityString();
-            petImage.color = isOwn
-                ? Color.white
-                : PetRenderingHelper.GetUIColor(PetRenderingHelper.NotOwnSlot);
+            petGraphic.skeletonDataAsset = PetFrontHelper.GetPetSkeletonData(model.PetRow.Id);
+            petGraphic.rectTransform.localPosition =
+                PetFrontHelper.GetLocalPositionInCard(model.PetRow.Id);
+            petGraphic.rectTransform.localScale =
+                PetFrontHelper.GetLocalScaleInCard(model.PetRow.Id);
+            petGraphic.Initialize(true);
+            var hsv = PetFrontHelper.GetHsv(model.PetRow.Id);
+            uiHsvModifiers.ForEach(modifier =>
+            {
+                modifier.hue = hsv.x;
+                modifier.saturation = hsv.y;
+                modifier.value = hsv.z;
+            });
             var maxLevel = TableSheets.Instance.PetCostSheet[model.PetRow.Id]
                 .Cost
                 .OrderBy(data => data.Level)
                 .Last()
                 .Level;
+            var isOwn = States.Instance.PetStates.TryGetPetState(model.PetRow.Id, out _petState);
+            var isMaxLevel = _petState?.Level == maxLevel;
+            infoView.Set(model.PetRow.Id, model.PetRow.Grade);
             levelText.text = isOwn
-                ? $"<size=14>Lv.</size>{_petState.Level}/{maxLevel}"
-                : L10nManager.Localize("UI_NOT_POSSESSED");
-            levelText.color = isOwn
-                ? _petState.Level == maxLevel
-                    ? PetRenderingHelper.GetUIColor(PetRenderingHelper.MaxLevelText)
-                    : Color.white
-                : PetRenderingHelper.GetUIColor(PetRenderingHelper.NotOwnText);
-            petInfoText.color = Color.white;
-            petInfoText.text = L10nManager.Localize($"PET_NAME_{model.PetRow.Id}");
-            model.EquippedIcon.SubscribeTo(equippedIcon).AddTo(_disposables);
+                ? $"Lv.{_petState.Level}"
+                : "-";
+            levelText.color = isMaxLevel
+                ? PetFrontHelper.GetUIColor(PetFrontHelper.MaxLevelText)
+                : Color.white;
+
             model.HasNotification.Subscribe(b =>
             {
                 var levelUpAble = b && _petState is not null;
@@ -110,29 +114,27 @@ namespace Nekoyume.UI.Module.Pet
                 hasNotification.SetActive(b);
                 levelUpNotification.SetActive(levelUpAble);
                 summonableNotification.SetActive(summonAble);
-                if (summonAble)
-                {
-                    petInfoText.color =
-                        PetRenderingHelper.GetUIColor(PetRenderingHelper.SummonableText);
-                    petInfoText.text = L10nManager.Localize("UI_SUMMONABLE");
-                }
             }).AddTo(_disposables);
-            LoadingHelper.PetEnhancement
-                .Subscribe(id =>
-                {
-                    var isLoading = id == model.PetRow.Id;
-                    loading.SetActive(isLoading);
-                    if (isLoading)
-                    {
-                        petInfoText.color =
-                            PetRenderingHelper.GetUIColor(PetRenderingHelper.LevelUpText);
-                        petInfoText.text =
-                            L10nManager.Localize(isOwn
-                                ? "UI_LEVELUP_IN_PROGRESS"
-                                : "UI_SUMMONING_IN_PROGRESS");
-                    }
-                })
-                .AddTo(_disposables);
+            model.Empty.Subscribe(b =>
+            {
+                emptyObject.SetActive(b);
+                petInfoObject.SetActive(!b);
+            }).AddTo(_disposables);
+            model.Selected.SubscribeTo(selectedObject).AddTo(_disposables);
+            LoadingHelper.PetEnhancement.Subscribe(id =>
+            {
+                var isLoading = id == model.PetRow.Id;
+                loading.SetActive(isLoading);
+                // if (isLoading)
+                // {
+                //     petInfoText.color =
+                //         PetFrontHelper.GetUIColor(PetFrontHelper.LevelUpText);
+                //     petInfoText.text =
+                //         L10nManager.Localize(isOwn
+                //             ? "UI_LEVELUP_IN_PROGRESS"
+                //             : "UI_SUMMONING_IN_PROGRESS");
+                // }
+            }).AddTo(_disposables);
         }
 
         private void OnDisable()

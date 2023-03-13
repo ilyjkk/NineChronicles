@@ -34,14 +34,14 @@ namespace Nekoyume.UI
             States.Instance.PetStates.TryGetPetState(petRow.Id, out var prevPetState);
             var currentOption = TableSheets.Instance.PetOptionSheet[action.PetId].LevelOptionMap[prevPetState.Level];
             var targetOption = TableSheets.Instance.PetOptionSheet[action.PetId].LevelOptionMap[action.TargetLevel];
-            petInfoView.Set(L10nManager.Localize($"PET_NAME_{petRow.Id}"), petRow.Grade);
+            petInfoView.Set(petRow.Id, petRow.Grade);
             contentText.text = L10nManager.Localize(
                 $"PET_DESCRIPTION_TWO_OPTION_{targetOption.OptionType}",
                 currentOption.OptionValue,
                 targetOption.OptionValue);
             prevLevelText.text = $"<size=30>Lv.</size>{prevPetState.Level}";
             newLevelText.text = $"{action.TargetLevel}";
-            petSkeletonGraphic.skeletonDataAsset = PetRenderingHelper.GetPetSkeletonData(petRow.Id);
+            petSkeletonGraphic.skeletonDataAsset = PetFrontHelper.GetPetSkeletonData(petRow.Id);
             petSkeletonGraphic.Initialize(true);
         }
     }
