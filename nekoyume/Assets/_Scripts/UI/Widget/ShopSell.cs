@@ -246,7 +246,7 @@ namespace Nekoyume.UI
                 data.TitleText.Value = model.ItemBase.GetLocalizedName();
                 data.Submittable.Value = !DimmedFuncForSell(model.ItemBase);
                 data.Item.Value = new CountEditableItem(model.ItemBase,
-                    1,
+                    model.Count.Value,
                     1,
                     model.Count.Value);
             }
@@ -255,12 +255,12 @@ namespace Nekoyume.UI
                 data.TitleText.Value = model.FungibleAssetValue.GetLocalizedName();
                 data.Submittable.Value = true;
                 data.Item.Value = new CountEditableItem(model.FungibleAssetValue,
-                    1,
+                    model.Count.Value,
                     1,
                     model.Count.Value);
             }
 
-            data.Item.Value.CountEnabled.Value = false;
+            data.Item.Value.CountEnabled.Value = true;
         }
 
         private void ShowReRegisterProductPopup(ShopItem model) // 판매 갱신
@@ -287,11 +287,11 @@ namespace Nekoyume.UI
 
                 data.TitleText.Value = model.ItemBase.GetLocalizedName();
                 data.Submittable.Value = !DimmedFuncForSell(model.ItemBase);
+                var itemInventoryCount = 0;
                 data.Item.Value = new CountEditableItem(model.ItemBase,
-                    itemCount,
+                    itemInventoryCount,
                     itemCount,
                     itemCount);
-                data.Item.Value.CountEnabled.Value = false;
             }
 
             if (model.FungibleAssetProduct is not null)
@@ -311,14 +311,14 @@ namespace Nekoyume.UI
 
                 data.TitleText.Value = model.FungibleAssetValue.GetLocalizedName();
                 data.Submittable.Value = true;
+                var itemInventoryCount = 0;
                 data.Item.Value = new CountEditableItem(model.FungibleAssetValue,
-                    itemCount,
+                    itemInventoryCount,
                     itemCount,
                     itemCount);
-
             }
 
-            data.Item.Value.CountEnabled.Value = false;
+            data.Item.Value.CountEnabled.Value = true;
         }
 
         private async void SubscribeReRegisterProduct()

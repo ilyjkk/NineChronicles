@@ -114,6 +114,7 @@ namespace Nekoyume.UI
                     }
                 })
                 .AddTo(_disposablesForSetData);
+            itemView.ignoreOne = true;
             itemView.SetData(_data.Item.Value);
         }
 
